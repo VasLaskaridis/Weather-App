@@ -1,4 +1,4 @@
-package com.example.weatherapp.network.models
+package com.example.weatherapp.retrofit.models
 
 data class Weather (
 

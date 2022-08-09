@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weatherapp.R
-import com.example.weatherapp.network.models.List
+import com.example.weatherapp.retrofit.models.List
 
 class HourForcastRecyclerViewAdapter : RecyclerView.Adapter<HourForcastRecyclerViewAdapter.MyViewHolder>() {
 

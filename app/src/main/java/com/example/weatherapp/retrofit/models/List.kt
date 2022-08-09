@@ -1,4 +1,4 @@
-package com.example.weatherapp.network.models
+package com.example.weatherapp.retrofit.models
 
 import com.google.gson.annotations.SerializedName
 import kotlin.collections.List

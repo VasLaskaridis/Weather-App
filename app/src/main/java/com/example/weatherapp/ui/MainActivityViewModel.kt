@@ -1,45 +1,66 @@
 package com.example.weatherapp.ui
 
 import androidx.lifecycle.*
-import com.example.weatherapp.network.models.WeatherResponse
-import com.example.weatherapp.network.models.List
-import com.example.weatherapp.network.RetrofitInstance
+import com.example.weatherapp.retrofit.Repository
+import com.example.weatherapp.retrofit.models.WeatherResponse
+import com.example.weatherapp.retrofit.models.List
+import com.example.weatherapp.retrofit.RetrofitInstance
 import com.example.weatherapp.util.Resource
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
-class MainActivityViewModel() : ViewModel() {
+class MainActivityViewModel : ViewModel() {
 
-    val weatherData: MutableLiveData<Resource<WeatherResponse>> = MutableLiveData()
+    private val repository: Repository =Repository()
 
-    fun weatherDataObserver(): MutableLiveData<Resource<WeatherResponse>> {
+    sealed class StateOfData {
+        class Success(val result: WeatherResponse) : StateOfData()
+        class Error(val errorText: String) : StateOfData()
+        object Loading : StateOfData()
+        object Empty : StateOfData()
+    }
+
+    private val weatherDataState = MutableStateFlow<StateOfData>(StateOfData.Empty)
+
+    private lateinit var weatherData:WeatherResponse
+
+    fun weatherDataStateObserver(): MutableStateFlow<StateOfData> {
+        return weatherDataState
+    }
+
+    fun getWeatherData():WeatherResponse{
         return weatherData
     }
 
     fun requestWeatherDataOfCity(CITY: String) {
         viewModelScope.launch {
-            weatherData.postValue(Resource.Loading())
-            val response = RetrofitInstance.api.getForcast(CITY)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    weatherData.postValue(Resource.Success(it))
+            weatherDataState.value = StateOfData.Loading
+            val response = repository.getWeatherDataOfCity(RetrofitInstance.api, CITY)
+            when (response) {
+                is Resource.Error -> {
+                    weatherDataState.value = StateOfData.Error(response.message!!)
                 }
-            } else {
-                weatherData.postValue(Resource.Error(response.message()))
+                is Resource.Success -> {
+                    weatherData=response.data!!
+                    weatherDataState.value = StateOfData.Success(weatherData)
+                }
             }
         }
     }
 
     fun requestWeatherDataOfLocation(lat: Double, lon: Double) {
         viewModelScope.launch {
-            weatherData.postValue(Resource.Loading())
-            val response = RetrofitInstance.api.getForcastGeo(lat, lon)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    weatherData.postValue(Resource.Success(it))
+            weatherDataState.value = StateOfData.Loading
+            val response = repository.getWeatherDataOfLocation(RetrofitInstance.api, lat, lon)
+            when (response) {
+                is Resource.Error -> {
+                    weatherDataState.value = StateOfData.Error(response.message!!)
                 }
-            } else {
-                weatherData.postValue(Resource.Error(response.message()))
+                is Resource.Success -> {
+                    weatherData=response.data!!
+                    weatherDataState.value = StateOfData.Success(response.data)
+                }
             }
         }
     }
@@ -99,7 +120,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 }
 
-class MainActivityViewModelFactory() : ViewModelProvider.Factory {
+class MainActivityViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
