@@ -110,56 +110,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        viewModel.weatherDataObserver().observe(this, object : Observer<Resource<WeatherResponse>> {
-//                override fun onChanged(weatherResponse: Resource<WeatherResponse>) {
-//                    when(weatherResponse){
-//                        is Resource.Success->{
-//                            weatherResponse.data?.let{
-//                                binding.loadingProgressBar.visibility= View.GONE
-//
-//                                binding.mainLayout.visibility=View.VISIBLE
-//
-//                                this@MainActivity.weatherResponse = weatherResponse.data
-//
-//                                hourForcastRecyclerViewAdapter.setHourForcastDataList(weatherResponse.data.list)
-//
-//                                binding.cityNameTextview.setText(weatherResponse.data.city.name)
-//                                val temperatureHolder=weatherResponse.data.list.get(0).main.temp.toInt().toString()+"°C"
-//                                binding.temperatureTextview.setText(temperatureHolder)
-//                                binding.conditionTextview.setText(weatherResponse.data.list.get(0).weather.get(0).description)
-//
-//                                val datesOfForecastList=viewModel.getDatesOfForecastedWeather(weatherResponse.data.list)
-//                                binding.forecast1DateTextview.setText(datesOfForecastList[1])
-//                                binding.forecast2DateTextview.setText(datesOfForecastList[2])
-//                                binding.forecast3DateTextview.setText(datesOfForecastList[3])
-//
-//                                val temperatureRangeList=viewModel.getMinMaxTemperaturesOfDates(weatherResponse.data.list)
-//                                binding.forecast1TempTextview.setText(temperatureRangeList[1])
-//                                binding.forecast2TempTextview.setText(temperatureRangeList[2])
-//                                binding.forecast3TempTextview.setText(temperatureRangeList[3])
-//                                //i dont pass all date in iconlist because
-//                                //i want the condition icon for today be for day or night
-//                                //and the condition icons for the next days only for day
-//                                setConditionIconImage(weatherResponse.data.list.get(0).weather.get(0).icon,binding.conditionImageview)
-//                                val conditionIconIdList=viewModel.getWeatherConditionIconIdOfDates(weatherResponse.data.list)
-//                                setConditionIconImage(conditionIconIdList.get(1),binding.forecast1ConditionImageview)
-//                                setConditionIconImage(conditionIconIdList.get(2),binding.forecast2ConditionImageview)
-//                                setConditionIconImage(conditionIconIdList.get(3),binding.forecast3ConditionImageview)
-//                            }
-//                        }
-//                        is Resource.Error->{
-//                            binding.loadingProgressBar.visibility= View.GONE
-//                            binding.mainLayout.visibility=View.VISIBLE
-//                            Snackbar.make(binding.mainLayout, "Sorry, something went wrong",  Snackbar.LENGTH_SHORT).show()
-//                        }
-//                        is Resource.Loading->{
-//                            binding.loadingProgressBar.visibility= View.VISIBLE
-//                            binding.mainLayout.visibility=View.GONE
-//                        }
-//                    }
-//                }
-//            })
-
         binding.citySearchButton.setOnClickListener{
             val cityInputText:String=binding.citySearchTextinputedittext.text.toString()
             val temp:String=cityInputText.trim()
