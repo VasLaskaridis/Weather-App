@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var weatherResponse: WeatherResponse? =null
 
     private val MY_PERMISSIONS_REQUEST_INTERNET = 0
-    private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
+    private val MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1
 
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationProviderClient:FusedLocationProviderClient
@@ -155,8 +155,12 @@ class MainActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), MY_PERMISSIONS_REQUEST_INTERNET)
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION)
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED){
+                getCurrentLocation()
         }
     }
 
@@ -166,9 +170,8 @@ class MainActivity : AppCompatActivity() {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 this.finish()
             }
-            return
         }
-        if (requestCode== MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+        if (requestCode== MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 unableToFindLocation()
             } else{
@@ -185,7 +188,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getCurrentLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (isGPSEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener{location->
                     if (location != null) {
@@ -254,7 +257,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
         }
     }
