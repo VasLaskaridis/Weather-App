@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLocationUpdates() {
         requestingLocationUpdates=true
-         locationCallback = object : LocationCallback() {
+        locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
                 for (location in locationResult.locations){
