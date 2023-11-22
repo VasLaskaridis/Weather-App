@@ -1,5 +1,5 @@
 # OVERVIEW
-A very basic expenses weather app written in Kotlin. Thea app uses data from OpenWeather API.
+A weather app written in Kotlin. This app uses data from OpenWeather API.
 
 # Screenshots
 <p float="left">
