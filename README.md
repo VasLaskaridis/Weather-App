@@ -1,5 +1,17 @@
 # OVERVIEW
-A weather app written in Kotlin. This app uses data from OpenWeather API.
+A weather app for Android.
+
+## Requirements
+- Writen in Kotlin
+- Fetch weather data from OpenWeather API
+- Display the data
+- A search button which the user can use to search for the weather of a different city
+
+## Tools used
+- Android Studio IDE
+- Retrofit
+- Glide
+- Gps
 
 # Screenshots
 <p float="left">
